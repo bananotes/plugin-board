@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { EntryCard } from '@extension/ui';
+import { v4 as uuidV4 } from 'uuid';
+
+const uuid = uuidV4();
 
 export default function App() {
   useEffect(() => {
-    console.log('runtime content view loaded');
+    console.log('runtime content view loaded', uuid);
   }, []);
 
   const handleClick = () => {
@@ -22,8 +25,7 @@ export default function App() {
       onKeyDown={handleA11yKeyDown}
       role="button"
       tabIndex={0}>
-      runtime content view
-      <EntryCard>1234</EntryCard>
+      <EntryCard id={uuid}>1234</EntryCard>
     </div>
   );
 }

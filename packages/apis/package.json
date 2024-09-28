@@ -1,0 +1,11 @@
+{
+  "name": "@extension/apis",
+  "version": "1.0.0",
+  "description": "Bananotes - APIs",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [],
+  "author": ""
+}
