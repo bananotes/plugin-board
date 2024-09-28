@@ -21,13 +21,16 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@extension/ui": "workspace:*"
+    "@extension/ui": "workspace:*",
+    "axios": "^1.7.7",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@extension/hmr": "workspace:*",
     "@extension/tailwindcss-config": "workspace:*",
     "@extension/tsconfig": "workspace:*",
-    "@extension/hmr": "workspace:*",
     "@extension/vite-config": "workspace:*",
+    "@types/uuid": "^10.0.0",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3"
   }
