@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { EntryCard } from '@extension/ui';
 
 export default function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function App() {
       role="button"
       tabIndex={0}>
       runtime content view
+      <EntryCard>1234</EntryCard>
     </div>
   );
 }

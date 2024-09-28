@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.runtime-content-view-text {
+  font-size: 20px;
+}
+.runtime-content-view-text button {
+  color: red;
+}
