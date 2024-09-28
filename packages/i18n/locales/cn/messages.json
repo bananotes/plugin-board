@@ -1,0 +1,30 @@
+{
+  "extensionDescription": {
+    "description": "Extension description",
+    "message": "构建你自己的网页便笺，并与网友共享"
+  },
+  "extensionName": {
+    "description": "Extension name",
+    "message": "香蕉便笺"
+  },
+  "toggleTheme": {
+    "message": "更改主题"
+  },
+  "loading": {
+    "message": "加载中..."
+  },
+  "greeting": {
+    "description": "",
+    "message": "你好，我的名字是$NAME$。",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "香蕉便签"
+      }
+    }
+  },
+  "hello": {
+    "description": "占位符示例",
+    "message": "你好 $1"
+  }
+}
