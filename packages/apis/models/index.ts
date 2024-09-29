@@ -21,5 +21,6 @@ export * from './inline-response2006';
 export * from './inline-response201';
 export * from './inline-response404';
 export * from './position';
+export * from './size';
 export * from './user';
 export * from './user-preference';

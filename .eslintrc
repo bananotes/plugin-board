@@ -37,7 +37,10 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "import/no-unresolved": "off",
-    "@typescript-eslint/consistent-type-imports": "error"
+    "@typescript-eslint/consistent-type-imports": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "spaced-comment": ["error", "always", { "exceptions": ["-", "+"] }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
   },
   "globals": {
     "chrome": "readonly"

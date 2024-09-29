@@ -12,6 +12,7 @@
  */
 
 import { Position } from './position';
+import { Size } from './size';
 
 /**
  *
@@ -45,16 +46,16 @@ export interface Entry {
   url: string;
   /**
    *
+   * @type {Size}
+   * @memberof Entry
+   */
+  size: Size;
+  /**
+   *
    * @type {Position}
    * @memberof Entry
    */
   position: Position;
-  /**
-   *
-   * @type {object}
-   * @memberof Entry
-   */
-  size: object;
   /**
    * user likes count
    * @type {number}
