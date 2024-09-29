@@ -17,7 +17,7 @@ type PopupSettingsStorage = BaseStorage<PopupSettings> & {
 const defaultSettings: PopupSettings = {
   progress: 100,
   isMultiUser: false,
-  userName: 'HLiu',
+  userName: '',
 };
 
 const storage = createStorage<PopupSettings>('popup-settings-storage-key', defaultSettings, {
