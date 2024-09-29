@@ -4,6 +4,7 @@ import type { Entry, EntryPosition, EntrySize } from '@apis/models';
 import { Button } from '../Button';
 import type { DraggableData } from 'react-rnd';
 import { Rnd } from 'react-rnd';
+import { Content } from './Content';
 
 export type CardProps = {
   remove: () => void;
@@ -24,10 +25,20 @@ const initialSize: EntrySize = {
   height: Math.round(Math.random() * 30 - 15) + 300,
 };
 
-export const EntryCard = ({ remove, isEditing, id: uuid, size, position, updateTime, className }: CardProps) => {
+export const EntryCard = ({
+  remove,
+  isEditing,
+  id: uuid,
+  size,
+  position,
+  updateTime,
+  content,
+  className,
+}: CardProps) => {
   const [currentPosition, setCurrentPosition] = useState(position || initialPosition);
   const [currentSize, setCurrentSize] = useState(size || initialSize);
   const [pageHeight, setPageHeight] = useState(0);
+  // TODO: check if the user is the owner of the note
   // const [isSelf, setIsSelf] = useState(true);
   const isSelf = true;
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -58,6 +69,18 @@ export const EntryCard = ({ remove, isEditing, id: uuid, size, position, updateT
   };
   const handleHide = () => {
     console.log('handleHide');
+  };
+  const [disliked, setDisliked] = useState(false);
+  const handleDislike = () => {
+    console.log('handleDislike');
+    if (disliked) return;
+    setDisliked(true);
+  };
+  const [liked, setLiked] = useState(false);
+  const handleLike = () => {
+    console.log('handleLike');
+    if (liked) return;
+    setLiked(true);
   };
   return (
     <div
@@ -94,11 +117,11 @@ export const EntryCard = ({ remove, isEditing, id: uuid, size, position, updateT
             )}
             {isEditing && (
               <>
-                <Button className="bg-yellow-600 text-white" onClick={handleCancel}>
-                  Cancel (Esc)
+                <Button className="bg-yellow-600 text-white" onClick={handleCancel} title="Discard your draft (Esc)">
+                  Cancel
                 </Button>
-                <Button className="bg-green-700 text-white" onClick={handleSave}>
-                  Save (Ctrl + Enter)
+                <Button className="bg-green-700 text-white" onClick={handleSave} title="Save your note! (Ctrl + Enter)">
+                  Save
                 </Button>
               </>
             )}
@@ -117,7 +140,29 @@ export const EntryCard = ({ remove, isEditing, id: uuid, size, position, updateT
               </>
             )}
           </div>
-          <div className="note-body relative bg-red-500 flex-grow overflow-y-scroll"></div>
+          <div className="note-body relative flex-grow overflow-y-scroll">
+            {!isEditing && <Content content={content} />}
+            {!isSelf && (
+              <>
+                <Button
+                  className={cn(
+                    'absolute bottom-2 right-10',
+                    disliked ? 'bg-gray-200 hover:scale-100 cursor-default' : 'bg-black text-white',
+                  )}
+                  onClick={handleDislike}>
+                  👎
+                </Button>
+                <Button
+                  className={cn(
+                    'absolute bottom-2 right-1',
+                    liked ? 'bg-gray-200 hover:scale-100 cursor-default' : 'bg-green-500 text-white',
+                  )}
+                  onClick={handleLike}>
+                  👍
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </Rnd>
     </div>
