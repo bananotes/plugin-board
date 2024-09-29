@@ -303,6 +303,9 @@ importers:
 
   pages/content-ui:
     dependencies:
+      '@extension/apis':
+        specifier: workspace:*
+        version: link:../../packages/apis
       '@extension/shared':
         specifier: workspace:*
         version: link:../../packages/shared

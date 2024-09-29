@@ -7,7 +7,7 @@ import { Rnd } from 'react-rnd';
 import { Content } from './Content';
 import { NoteEditor } from './NoteEditor';
 import { useStorage } from '@extension/shared';
-import { entryDraftStorage } from '@extension/storage';
+import { entryDraftStorage, popupSettingsStorage } from '@extension/storage';
 
 export type CardProps = {
   remove: () => void;
@@ -36,18 +36,19 @@ export const EntryCard = ({
   position,
   updateTime,
   content,
+  author,
   className,
 }: CardProps) => {
   const [currentPosition, setCurrentPosition] = useState(position || initialPosition);
   const [currentSize, setCurrentSize] = useState(size || initialSize);
   const [pageHeight, setPageHeight] = useState(0);
+  const [isInEditingStatus, setIsInEditingStatus] = useState(isEditing);
   const entryDraft = useStorage(entryDraftStorage);
-  // TODO: check if the user is the owner of the note
-  // const [isSelf, setIsSelf] = useState(true);
-  const isSelf = true;
+  const userPreference = useStorage(popupSettingsStorage);
+  const [isSelf, setIsSelf] = useState(isInEditingStatus || userPreference.userName === author);
   const wrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    console.log('uuid: ', uuid, isEditing, size, position, window.scrollX, window.scrollY);
+    console.log('uuid: ', uuid, isInEditingStatus, size, position, window.scrollX, window.scrollY);
     console.log(JSON.stringify(entryDraft));
     setPageHeight(document.body.scrollHeight);
     if (position) {
@@ -69,6 +70,26 @@ export const EntryCard = ({
   const handleSave = () => {
     console.log('handleSave');
     console.log(entryDraft[uuid]);
+    chrome.runtime.sendMessage(
+      {
+        type: 'request',
+        method: 'POST',
+        url: 'http://localhost:3000/entry/',
+        data: {
+          content: entryDraft[uuid],
+          id: uuid,
+          position: currentPosition,
+          size: currentSize,
+          url: encodeURIComponent(window.location.hostname + window.location.pathname),
+          author: 'HLiu',
+        },
+      },
+      response => {
+        console.log('response', response);
+        setIsInEditingStatus(false);
+        setIsSelf(true);
+      },
+    );
   };
   const handleDelete = () => {
     console.log('handleDelete');
@@ -104,6 +125,7 @@ export const EntryCard = ({
         dragHandleClassName="note-drag-handler"
         bounds="body"
         dragAxis="both"
+        disableDragging={!isSelf}
         onDragStop={(_, data: DraggableData) => {
           console.log('onDragStop', data);
           setCurrentPosition({ x: data.lastX, y: data.lastY });
@@ -123,7 +145,7 @@ export const EntryCard = ({
                 {new Date(updateTime - new Date().getTimezoneOffset() * 60 * 1000).toLocaleString()}
               </span>
             )}
-            {isEditing && (
+            {isInEditingStatus && (
               <>
                 <Button className="bg-yellow-600 text-white" onClick={handleCancel} title="Discard your draft (Esc)">
                   Cancel
@@ -133,7 +155,7 @@ export const EntryCard = ({
                 </Button>
               </>
             )}
-            {!isEditing && (
+            {!isInEditingStatus && (
               <>
                 {isSelf && (
                   <Button className="bg-red-500 text-white" onClick={handleDelete}>
@@ -149,8 +171,8 @@ export const EntryCard = ({
             )}
           </div>
           <div className="note-body relative flex-grow overflow-y-scroll">
-            {!isEditing && <Content content={content} />}
-            {isEditing && <NoteEditor uuid={uuid} content={content} />}
+            {!isInEditingStatus && <Content uuid={uuid} content={content} />}
+            {isInEditingStatus && <NoteEditor uuid={uuid} content={content} />}
             {!isSelf && (
               <>
                 <Button

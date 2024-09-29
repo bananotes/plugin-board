@@ -16,9 +16,13 @@ export function NoteEditor({ content, uuid, className }: NoteEditorProps) {
     try {
       rawList = JSON.parse(content || '[]');
     } catch (e) {
-      console.error(e);
-      setShowParseError(true);
-      throw e;
+      try {
+        rawList = JSON.parse(`[{"type":"paragraph","children":[{"text":"${content}"}]}]`);
+      } catch (e) {
+        console.error(e);
+        setShowParseError(true);
+        throw e;
+      }
     }
     console.log('rawList: ', JSON.stringify(rawList));
     if (Array.isArray(rawList) && rawList.length > 0) {
