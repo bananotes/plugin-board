@@ -6,6 +6,7 @@ import type { DraggableData } from 'react-rnd';
 import { Rnd } from 'react-rnd';
 
 export type CardProps = {
+  remove: () => void;
   isEditing: boolean;
 } & Entry &
   ComponentPropsWithoutRef<'div'>;
@@ -23,7 +24,7 @@ const initialSize: EntrySize = {
   height: Math.round(Math.random() * 30 - 15) + 300,
 };
 
-export const EntryCard = ({ isEditing, id: uuid, size, position, updateTime, className }: CardProps) => {
+export const EntryCard = ({ remove, isEditing, id: uuid, size, position, updateTime, className }: CardProps) => {
   const [currentPosition, setCurrentPosition] = useState(position || initialPosition);
   const [currentSize, setCurrentSize] = useState(size || initialSize);
   const [pageHeight, setPageHeight] = useState(0);
@@ -46,6 +47,8 @@ export const EntryCard = ({ isEditing, id: uuid, size, position, updateTime, cla
   }, []);
   const handleCancel = () => {
     console.log('handleCancel');
+    // TODO: remove draft
+    remove();
   };
   const handleSave = () => {
     console.log('handleSave');
@@ -92,10 +95,10 @@ export const EntryCard = ({ isEditing, id: uuid, size, position, updateTime, cla
             {isEditing && (
               <>
                 <Button className="bg-yellow-600 text-white" onClick={handleCancel}>
-                  Cancel
+                  Cancel (Esc)
                 </Button>
                 <Button className="bg-green-700 text-white" onClick={handleSave}>
-                  Save
+                  Save (Ctrl + Enter)
                 </Button>
               </>
             )}
