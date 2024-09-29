@@ -64,6 +64,7 @@ export const EntryCard = ({
   }, []);
   const [colorfulBg, setColorfulBg] = useState('');
   useEffect(() => {
+    if (!uuid || isSelf) return;
     const bn = new BigNumber(uuid.replace(/-/g, ''), 16);
     const diffs = bn
       .toString(10)
