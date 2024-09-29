@@ -1,12 +1,16 @@
 import { useEffect, useState, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '../../utils';
 import { type ContentList } from './env';
+import { entryDraftStorage } from '@extension/storage';
+import { useStorage } from '@extension/shared';
 
 export type ContentProps = {
   content: string;
+  uuid: string;
 } & ComponentPropsWithoutRef<'div'>;
 
-export function Content({ content, className, ...props }: ContentProps) {
+export function Content({ content, uuid, className, ...props }: ContentProps) {
+  const entryDraft = useStorage(entryDraftStorage);
   const [contentList, setContentList] = useState<ContentList>([
     {
       type: 'paragraph',
@@ -15,13 +19,21 @@ export function Content({ content, className, ...props }: ContentProps) {
   ]);
   const [showParseError, setShowParseError] = useState(false);
   useEffect(() => {
+    console.log('content in Content: ', content);
+    if (typeof content === 'undefined') {
+      content = entryDraft[uuid];
+    }
     let rawList = [];
     try {
-      rawList = JSON.parse(content || '[]');
+      rawList = JSON.parse(content || `[{"type":"paragraph","children":[{"text":"${content}"}]}]`);
     } catch (e) {
-      console.error(e);
-      setShowParseError(true);
-      throw e;
+      try {
+        rawList = JSON.parse(`[{"type":"paragraph","children":[{"text":"${content}"}]}]`);
+      } catch (e) {
+        console.error(e);
+        setShowParseError(true);
+        throw e;
+      }
     }
     if (Array.isArray(rawList) && rawList.length > 0) {
       setContentList(rawList);
@@ -42,6 +54,7 @@ export function Content({ content, className, ...props }: ContentProps) {
                     child.italic && 'italic',
                     child.code && 'font-mono',
                     child.underline && 'underline',
+                    'text-xs',
                   )}>
                   {child.text}
                 </p>
