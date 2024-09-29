@@ -8,6 +8,7 @@ import { Content } from './Content';
 import { NoteEditor } from './NoteEditor';
 import { useStorage } from '@extension/shared';
 import { entryDraftStorage, popupSettingsStorage } from '@extension/storage';
+import BigNumber from 'bignumber.js';
 
 export type CardProps = {
   remove: () => void;
@@ -31,7 +32,7 @@ const initialSize: EntrySize = {
 export const EntryCard = ({
   remove,
   isEditing,
-  id: uuid,
+  _id: uuid,
   size,
   position,
   updateTime,
@@ -48,7 +49,6 @@ export const EntryCard = ({
   const [isSelf, setIsSelf] = useState(isInEditingStatus || userPreference.userName === author);
   const wrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    console.log('uuid: ', uuid, isInEditingStatus, size, position, window.scrollX, window.scrollY);
     console.log(JSON.stringify(entryDraft));
     setPageHeight(document.body.scrollHeight);
     if (position) {
@@ -61,6 +61,20 @@ export const EntryCard = ({
       initialPosition.x += window.scrollX;
     }
     setCurrentPosition({ ...initialPosition });
+  }, []);
+  const [colorfulBg, setColorfulBg] = useState('');
+  useEffect(() => {
+    const bn = new BigNumber(uuid.replace(/-/g, ''), 16);
+    const diffs = bn
+      .toString(10)
+      .slice(-3)
+      .split('')
+      .map((c: string) => 3 * parseInt(c, 16));
+    const colorString = diffs.reduce((prev, curr) => {
+      return prev + (0xff - curr).toString(16);
+    }, '#');
+    setColorfulBg(colorString);
+    console.log('test big number', colorString);
   }, []);
   const handleCancel = () => {
     console.log('handleCancel');
@@ -81,7 +95,7 @@ export const EntryCard = ({
           position: currentPosition,
           size: currentSize,
           url: encodeURIComponent(window.location.hostname + window.location.pathname),
-          author: 'HLiu',
+          author: userPreference.userName,
         },
       },
       response => {
@@ -113,7 +127,10 @@ export const EntryCard = ({
     <div
       ref={wrapperRef}
       className="absolute h-full pointer-events-none inset-0"
-      style={{ height: pageHeight, zIndex: 99999 }}>
+      style={{
+        height: pageHeight,
+        zIndex: 99999,
+      }}>
       <Rnd
         className="pointer-events-auto"
         size={{ ...currentSize }}
@@ -184,7 +201,13 @@ export const EntryCard = ({
               </>
             )}
           </div>
-          <div className="note-body relative flex-grow overflow-y-scroll">
+          <div
+            className="note-body relative flex-grow overflow-y-scroll"
+            style={{
+              ...(colorfulBg && {
+                backgroundColor: colorfulBg,
+              }),
+            }}>
             {!isInEditingStatus && <Content uuid={uuid} content={content} />}
             {isInEditingStatus && <NoteEditor uuid={uuid} content={content} />}
             {!isSelf && (

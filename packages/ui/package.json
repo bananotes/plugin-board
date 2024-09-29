@@ -28,9 +28,10 @@
     "tsc-alias": "^1.8.10"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
+    "bignumber.js": "^9.1.2",
+    "clsx": "^2.1.1",
     "react-rnd": "^10.4.13",
     "tailwind-merge": "^2.4.0"
   }
