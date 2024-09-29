@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "@extension/shared": "workspace:*",
+    "@extension/storage": "workspace:*",
     "react-rnd": "^10.4.13",
     "tailwind-merge": "^2.4.0"
   }

@@ -5,6 +5,9 @@ import { Button } from '../Button';
 import type { DraggableData } from 'react-rnd';
 import { Rnd } from 'react-rnd';
 import { Content } from './Content';
+import { NoteEditor } from './NoteEditor';
+import { useStorage } from '@extension/shared';
+import { entryDraftStorage } from '@extension/storage';
 
 export type CardProps = {
   remove: () => void;
@@ -38,12 +41,14 @@ export const EntryCard = ({
   const [currentPosition, setCurrentPosition] = useState(position || initialPosition);
   const [currentSize, setCurrentSize] = useState(size || initialSize);
   const [pageHeight, setPageHeight] = useState(0);
+  const entryDraft = useStorage(entryDraftStorage);
   // TODO: check if the user is the owner of the note
   // const [isSelf, setIsSelf] = useState(true);
   const isSelf = true;
   const wrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     console.log('uuid: ', uuid, isEditing, size, position, window.scrollX, window.scrollY);
+    console.log(JSON.stringify(entryDraft));
     setPageHeight(document.body.scrollHeight);
     if (position) {
       return;
@@ -63,6 +68,7 @@ export const EntryCard = ({
   };
   const handleSave = () => {
     console.log('handleSave');
+    console.log(entryDraft[uuid]);
   };
   const handleDelete = () => {
     console.log('handleDelete');
@@ -92,7 +98,9 @@ export const EntryCard = ({
         size={{ ...currentSize }}
         position={{ ...currentPosition }}
         maxWidth="400"
+        minWidth="200"
         maxHeight="400"
+        minHeight="200"
         dragHandleClassName="note-drag-handler"
         bounds="body"
         dragAxis="both"
@@ -142,6 +150,7 @@ export const EntryCard = ({
           </div>
           <div className="note-body relative flex-grow overflow-y-scroll">
             {!isEditing && <Content content={content} />}
+            {isEditing && <NoteEditor uuid={uuid} content={content} />}
             {!isSelf && (
               <>
                 <Button
