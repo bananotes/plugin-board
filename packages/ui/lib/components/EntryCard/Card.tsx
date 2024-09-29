@@ -74,7 +74,7 @@ export const EntryCard = ({
       {
         type: 'request',
         method: 'POST',
-        url: 'http://localhost:3000/entry/',
+        url: 'http://bananotes.zeatles.com/entry/',
         data: {
           content: entryDraft[uuid],
           id: uuid,
@@ -125,7 +125,21 @@ export const EntryCard = ({
         dragHandleClassName="note-drag-handler"
         bounds="body"
         dragAxis="both"
-        disableDragging={!isSelf}
+        enableResizing={
+          isInEditingStatus
+            ? true
+            : {
+                top: false,
+                right: false,
+                bottom: false,
+                left: false,
+                topRight: false,
+                bottomRight: false,
+                bottomLeft: false,
+                topLeft: false,
+              }
+        }
+        disableDragging={!isInEditingStatus}
         onDragStop={(_, data: DraggableData) => {
           console.log('onDragStop', data);
           setCurrentPosition({ x: data.lastX, y: data.lastY });
@@ -139,12 +153,12 @@ export const EntryCard = ({
           zIndex: defaultSelfZIndex,
         }}>
         <div className={cn(className, 'flex flex-col text-black rounded shadow w-full h-full', defaultSelfBgColor)}>
-          <div className="title note-drag-handler text-right py-1 px-1 bg-yellow-300 cursor-move">
-            {updateTime && (
-              <span className="text-xs text-yellow-800">
-                {new Date(updateTime - new Date().getTimezoneOffset() * 60 * 1000).toLocaleString()}
-              </span>
-            )}
+          <div
+            className={cn(
+              'title note-drag-handler rounded text-right py-1 px-1 bg-yellow-300',
+              isInEditingStatus ? 'cursor-move' : '',
+            )}>
+            {updateTime && <span className="text-xs text-yellow-800">{new Date(updateTime).toLocaleString()}</span>}
             {isInEditingStatus && (
               <>
                 <Button className="bg-yellow-600 text-white" onClick={handleCancel} title="Discard your draft (Esc)">

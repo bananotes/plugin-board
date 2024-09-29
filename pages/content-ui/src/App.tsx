@@ -12,7 +12,7 @@ export default function App() {
       {
         type: 'request',
         method: 'GET',
-        url: `http://localhost:3000/entry?${userPreference.isMultiUser ? '' : 'author=' + userPreference.userName}`,
+        url: `http://bananotes.zeatles.com/entry?${userPreference.isMultiUser ? '' : 'author=' + userPreference.userName}`,
       },
       response => {
         console.log('response', response);
@@ -27,7 +27,7 @@ export default function App() {
   useEffect(() => {
     console.log('content ui loaded');
     getEntries();
-  }, [userPreference.isMultiUser, userPreference.progress]);
+  }, [userPreference.isMultiUser, userPreference.progress, userPreference.userName]);
 
   return (
     <div>
