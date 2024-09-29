@@ -4,10 +4,11 @@ import App from '@src/App';
 // eslint-disable-next-line
 // @ts-ignore
 import injectedStyle from '../dist/tailwind-output.css?inline';
+export const ROOT_ID = 'chrome-extension-bananotes-runtime-content-view-root';
 
 export function mount() {
   const root = document.createElement('div');
-  root.id = 'chrome-extension-bananotes-runtime-content-view-root';
+  root.id = ROOT_ID;
 
   document.body.append(root);
 
