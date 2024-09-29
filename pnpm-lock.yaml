@@ -208,6 +208,12 @@ importers:
 
   packages/ui:
     dependencies:
+      '@extension/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@extension/storage':
+        specifier: workspace:*
+        version: link:../storage
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

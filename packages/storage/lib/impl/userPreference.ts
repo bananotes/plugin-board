@@ -8,8 +8,8 @@ type PopupSettings = {
 };
 
 type PopupSettingsStorage = BaseStorage<PopupSettings> & {
-  setProgress: (_value: number) => Promise<void>;
-  setIsMultiUser: (_value: boolean) => Promise<void>;
+  setProgress: (_: number) => Promise<void>;
+  setIsMultiUser: (_: boolean) => Promise<void>;
 };
 
 const defaultSettings: PopupSettings = {
