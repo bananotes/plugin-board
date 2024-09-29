@@ -1,5 +1,5 @@
 import { useEffect, useState, type ComponentPropsWithoutRef } from 'react';
-import { cn } from '../../utils';
+import { cn, escapeUnicode } from '../../utils';
 import { type ContentList } from './env';
 import { entryDraftStorage } from '@extension/storage';
 import { useStorage } from '@extension/shared';
@@ -19,16 +19,19 @@ export function Content({ content, uuid, className, ...props }: ContentProps) {
   ]);
   const [showParseError, setShowParseError] = useState(false);
   useEffect(() => {
-    console.log('content in Content: ', content);
+    console.log('content in Content: ', content, uuid);
     if (typeof content === 'undefined') {
       content = entryDraft[uuid];
     }
+    content = content.replaceAll('\n', '\\n');
     let rawList = [];
     try {
-      rawList = JSON.parse(content || `[{"type":"paragraph","children":[{"text":"${content}"}]}]`);
+      rawList = JSON.parse(
+        escapeUnicode(content) || `[{"type":"paragraph","children":[{"text":"${escapeUnicode(content)}"}]}]`,
+      );
     } catch (e) {
       try {
-        rawList = JSON.parse(`[{"type":"paragraph","children":[{"text":"${content}"}]}]`);
+        rawList = JSON.parse(`[{"type":"paragraph","children":[{"text":"${escapeUnicode(content)}"}]}]`);
       } catch (e) {
         console.error(e);
         setShowParseError(true);

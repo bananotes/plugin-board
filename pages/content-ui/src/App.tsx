@@ -18,7 +18,9 @@ export default function App() {
         console.log('response', response);
         setEntryList(
           response.filter(
-            (entry: Entry) => entry.url === encodeURIComponent(window.location.hostname + window.location.pathname),
+            (entry: Entry) =>
+              entry.url === encodeURIComponent(window.location.hostname + window.location.pathname) ||
+              entry.url === window.location.hostname + window.location.pathname,
           ),
         );
       },
@@ -32,7 +34,7 @@ export default function App() {
   return (
     <div>
       {entryList.map(({ ...entry }: Entry) => (
-        <EntryCard key={entry.id} {...entry} />
+        <EntryCard key={entry._id} {...entry} />
       ))}
     </div>
   );

@@ -26,6 +26,7 @@ export interface Entry {
    * @memberof Entry
    */
   id: string;
+  _id: string;
   /**
    *
    * @type {string}
