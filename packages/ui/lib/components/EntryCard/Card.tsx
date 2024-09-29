@@ -59,7 +59,7 @@ export const EntryCard = ({ isEditing, id: uuid, size, position, updateTime, cla
   return (
     <div
       ref={wrapperRef}
-      className="absolute h-full pointer-events-none bg-red-300/50 inset-0"
+      className="absolute h-full pointer-events-none inset-0"
       style={{ height: pageHeight, zIndex: 99999 }}>
       <Rnd
         className="pointer-events-auto"
@@ -83,7 +83,7 @@ export const EntryCard = ({ isEditing, id: uuid, size, position, updateTime, cla
           zIndex: defaultSelfZIndex,
         }}>
         <div className={cn(className, 'flex flex-col text-black rounded shadow w-full h-full', defaultSelfBgColor)}>
-          <div className="title note-drag-handler text-right py-1 px-1 bg-yellow-300">
+          <div className="title note-drag-handler text-right py-1 px-1 bg-yellow-300 cursor-move">
             {updateTime && (
               <span className="text-xs text-yellow-800">
                 {new Date(updateTime - new Date().getTimezoneOffset() * 60 * 1000).toLocaleString()}

@@ -40,7 +40,8 @@
     "@typescript-eslint/consistent-type-imports": "error",
     "react-hooks/exhaustive-deps": "off",
     "spaced-comment": ["error", "always", { "exceptions": ["-", "+"] }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "jsx-a11y/label-has-associated-control": ["off"]
   },
   "globals": {
     "chrome": "readonly"
