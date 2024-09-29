@@ -37,7 +37,7 @@ export function NoteEditor({ content, uuid, className }: NoteEditorProps) {
     console.log('editableText: ', editableText);
   }, []);
   return (
-    <div className={cn('py-2 px-2 h-full text-xs rounded ', className)}>
+    <div className={cn('py-2 px-2 h-full text-xs rounded text-left', className)}>
       {showParseError ? (
         <div className="text-red-600 font-l">Failed to parse content</div>
       ) : (
